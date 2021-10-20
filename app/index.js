@@ -63,16 +63,12 @@ obj = highMilForIL;
 json = JSON.stringify(obj);
 fs.writeFile("./high-mileage-illinois.json", json);
 
-app.get("/:page", (req, res) => {
-  fs.readFile(`${req.params.page}.json`, "utf-8")
-    .then((contents) => {
-      res.json(contents);
-    })
-    .catch(() => {
-      res.statusCode = 404;
-      res.end("404!");
-    });
-});
+(async () => {
+  app.get("/:page", async (req, res) => {
+    const content = await fs.readFile(`${req.params.page}.json`, "utf-8");
+    res.json(content);
+  });
+})();
 
 app.listen(3000, () => {
   console.log("Server running");
