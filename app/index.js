@@ -2,6 +2,7 @@ import express from "express";
 import { promises as fs } from "fs";
 import data from "./data.js";
 
+// it is a framework for node that works on routing
 const app = express();
 
 // create object variable to store array
@@ -63,12 +64,16 @@ obj = highMilForIL;
 json = JSON.stringify(obj);
 fs.writeFile("./high-mileage-illinois.json", json);
 
-(async () => {
-  app.get("/:page", async (req, res) => {
+// app.get("/") is a handler for any incoming guest request
+
+app.get("/:page", async (req, res) => {
+  try {
     const content = await fs.readFile(`${req.params.page}.json`, "utf-8");
     res.json(content);
-  });
-})();
+  } catch (error) {
+    console.error(error);
+  }
+});
 
 app.listen(3000, () => {
   console.log("Server running");
